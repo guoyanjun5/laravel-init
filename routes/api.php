@@ -31,9 +31,16 @@ Route::group(['namespace' => 'Api', 'prefix' => 'v1'], function () {
 
 		});
 
-		Route::get('me', 'AuthController@me'); //获取用户
-		Route::delete('logout', 'AuthController@logout'); //退出
-		Route::post('login', 'AuthController@login')->name('login'); //登录
+		Route::post('login', 'AuthController@login')->name('login');//登录
+
+		Route::group(['middleware' => 'auth:api'], function () {
+
+		    Route::delete('logout', 'AuthController@logout'); //退出
+		    Route::get('refresh', 'AuthController@refresh'); //刷新 token
+		    Route::get('me', 'AuthController@me'); //获取用户
+
+		});
+
 	});
 
 });
